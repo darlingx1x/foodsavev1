@@ -1,13 +1,23 @@
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, TrendingUp, Users, Globe, DollarSign, Leaf, Target, CheckCircle, BarChart3, Clock, Shield } from "lucide-react";
+import BusinessRegistrationDialog from "@/components/BusinessRegistrationDialog";
 import businessPartnership from "@/assets/business-partnership.jpg";
 import appAnalytics from "@/assets/app-analytics.jpg";
 import restaurantStaff from "@/assets/restaurant-staff.jpg";
 
 const Business = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+  
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
 
   const benefits = [
     {
@@ -90,7 +100,11 @@ const Business = () => {
                 </p>
               </div>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Button size="lg" className="bg-white text-[#006260] hover:bg-teal-50 shadow-lg font-semibold">
+                <Button 
+                  size="lg" 
+                  className="bg-white text-[#006260] hover:bg-teal-50 shadow-lg font-semibold"
+                  onClick={handleOpenDialog}
+                >
                   Начать сотрудничество
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -332,8 +346,8 @@ const Business = () => {
           </div>
         </div>
       </section>
-{/* CTA Section */}
-<section className="py-12">
+      {/* CTA Section */}
+      <section className="py-12">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <div className="space-y-8">
             <Badge className="mb-4 bg-teal-100 text-[#006260] border-teal-200">Начните сегодня</Badge>
@@ -344,7 +358,11 @@ const Business = () => {
               Станьте частью экологической революции и увеличьте прибыльность вашего бизнеса
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-[#006260] to-[#005251] shadow-lg shadow-[#006260]/30 text-white hover:from-[#005251] hover:to-[#004241] font-semibold">
+              <Button 
+                size="lg" 
+                onClick={handleOpenDialog}
+                className="bg-gradient-to-r from-[#006260] to-[#005251] shadow-lg shadow-[#006260]/30 text-white hover:from-[#005251] hover:to-[#004241] font-semibold"
+              >
                 Зарегистрировать бизнес
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -369,6 +387,10 @@ const Business = () => {
           </div>
         </div>
       </section>
+      <BusinessRegistrationDialog 
+        open={isDialogOpen} 
+        onOpenChange={setIsDialogOpen} 
+      />
     </div>
   );
 };
