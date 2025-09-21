@@ -94,7 +94,7 @@ const Business = () => {
                   Начать сотрудничество
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-[#006260] font-semibold">
+                <Button variant="outline" size="lg" className="border-white text-[#006260] hover:bg-white hover:text-[#006260] font-semibold" style={{ backgroundColor: 'white' }}>
                   Презентация проекта
                 </Button>
               </div>
