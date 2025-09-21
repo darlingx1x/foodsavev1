@@ -1,47 +1,107 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from '@/assets/food-waste-hero.jpg';
 import uzbekistanStats from '@/assets/uzbekistan-stats.jpg';
 import businessImpact from '@/assets/business-impact.jpg';
 
+const InvestmentFormSchema = z.object({
+  name: z.string().min(2, "Минимум 2 символа"),
+  email: z.string().email("Некорректный email"),
+  company: z.string().optional(),
+  phone: z.string().min(5, "Укажите телефон"),
+  investmentAmount: z.string().min(1, "Укажите сумму"),
+  message: z.string().optional(),
+  trap: z.string().optional(), // honeypot
+});
+
 const AboutFoodWaste = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    investmentAmount: '',
-    message: ''
-  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  
+  const form = useForm<z.infer<typeof InvestmentFormSchema>>({
+    resolver: zodResolver(InvestmentFormSchema),
+    defaultValues: { 
+      name: '', 
+      email: '', 
+      company: '', 
+      phone: '', 
+      investmentAmount: '', 
+      message: '',
+      trap: '' 
+    },
+    mode: "onBlur",
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  const formsubmitEmail = (import.meta as any).env?.VITE_FORMSUBMIT_EMAIL as string | undefined;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Заявка отправлена!",
-      description: "Мы свяжемся с вами в ближайшее время для обсуждения инвестиционных возможностей.",
-    });
-    setIsModalOpen(false);
-    setFormData({
-      name: '',
-      email: '',
-      company: '',
-      phone: '',
-      investmentAmount: '',
-      message: ''
-    });
+  const onSubmit = async (values: z.infer<typeof InvestmentFormSchema>) => {
+    if (values.trap && values.trap.trim().length > 0) {
+      setIsModalOpen(false);
+      return;
+    }
+
+    if (!formsubmitEmail) {
+      toast({ 
+        title: "Ошибка конфигурации", 
+        description: "Не задан VITE_FORMSUBMIT_EMAIL.", 
+        variant: "destructive" 
+      });
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const endpoint = `https://formsubmit.co/ajax/${encodeURIComponent(formsubmitEmail)}`;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          company: values.company || 'Не указано',
+          phone: values.phone,
+          investmentAmount: values.investmentAmount,
+          message: values.message || 'Нет сообщения',
+          _subject: 'Заявка на инвестиции — FoodSave',
+          _template: 'table',
+          _captcha: 'false',
+          source: 'foodsavev1-website',
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`HTTP ${res.status} ${text}`);
+      }
+
+      form.reset();
+      toast({ 
+        title: "Заявка отправлена!", 
+        description: "Мы свяжемся с вами в ближайшее время для обсуждения инвестиционных возможностей." 
+      });
+      setIsModalOpen(false);
+    } catch (e: any) {
+      toast({ 
+        title: "Ошибка отправки", 
+        description: String(e?.message ?? e) || "Неизвестная ошибка", 
+        variant: "destructive" 
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToSolution = () => {
@@ -402,73 +462,124 @@ const AboutFoodWaste = () => {
                     Заполните форму, и наша команда свяжется с вами для обсуждения деталей.
                   </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                  <div className="space-y-2">
-                    <Input 
-                      type="text" 
-                      name="name" 
-                      placeholder="ФИО" 
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required 
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    {/* Honeypot field: hidden from users */}
+                    <FormField
+                      control={form.control}
+                      name="trap"
+                      render={({ field }) => (
+                        <input {...field} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+                      )}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Input 
-                      type="email" 
-                      name="email" 
-                      placeholder="Email" 
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required 
+
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>ФИО</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Иванов Иван" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Input 
-                      type="text" 
-                      name="company" 
-                      placeholder="Компания" 
-                      value={formData.company}
-                      onChange={handleInputChange}
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="you@example.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Input 
-                      type="tel" 
-                      name="phone" 
-                      placeholder="Телефон" 
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required 
+
+                    <FormField
+                      control={form.control}
+                      name="company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Компания (необязательно)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="ООО Пример" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  <div className="space-y-2">
-                    <Input 
-                      type="text" 
-                      name="investmentAmount" 
-                      placeholder="Сумма инвестиций" 
-                      value={formData.investmentAmount}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <textarea
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Телефон</FormLabel>
+                            <FormControl>
+                              <Input placeholder="+998 90 123 45 67" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="investmentAmount"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Сумма инвестиций</FormLabel>
+                            <FormControl>
+                              <Input placeholder="100 000 000 UZS" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <FormField
+                      control={form.control}
                       name="message"
-                      rows={4}
-                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Ваше сообщение"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                    ></textarea>
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full"
-                    style={styles.foodsaveGradient}
-                  >
-                    Отправить заявку
-                  </Button>
-                </form>
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Сообщение (необязательно)</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Расскажите о ваших инвестиционных интересах" 
+                                {...field} 
+                              />
+                            </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <DialogFooter className="pt-4">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => setIsModalOpen(false)} 
+                        disabled={isSubmitting}
+                      >
+                        Отмена
+                      </Button>
+                      <Button 
+                        type="submit" 
+                        style={styles.foodsaveGradient}
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </Form>
               </DialogContent>
             </Dialog>
             
