@@ -50,7 +50,6 @@ const AboutFoodWaste = () => {
       solutionSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  
   const styles = {
     foodsaveGradient: {
       background: 'linear-gradient(135deg, hsl(179 100% 19%), hsl(179 100% 16%))'
@@ -125,7 +124,7 @@ const AboutFoodWaste = () => {
             <p className="text-lg font-medium mb-4 text-yellow-300">ФАКТЫ О ПИЩЕВЫХ ОТХОДАХ</p>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               О ПИЩЕВЫХ<br />
-              <span style={styles.impactNumber} className="impact-number">ОТХОДАХ</span>
+              <span className="impact-number">ОТХОДАХ</span>
             </h1>
             <p className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed mb-12">
               Пищевые отходы — это глобальный вызов. Понимание масштабов и воздействия помогает нам 
@@ -399,85 +398,109 @@ const AboutFoodWaste = () => {
                 <DialogHeader>
                   <DialogTitle className="text-2xl font-bold text-center">Инвестиционная заявка</DialogTitle>
                   <DialogDescription className="text-center">
-                    Заполните форму, и наша команда свяжется с вами для обсуждения деталей.
+                    Заполните форму, и мы свяжемся с вами для обсуждения инвестиционных возможностей
                   </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Input 
-                      type="text" 
-                      name="name" 
-                      placeholder="ФИО" 
+                    <label className="text-sm font-medium">Имя и фамилия *</label>
+                    <Input
+                      name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      required 
+                      placeholder="Введите ваше имя"
+                      required
                     />
                   </div>
+                  
                   <div className="space-y-2">
-                    <Input 
-                      type="email" 
-                      name="email" 
-                      placeholder="Email" 
+                    <label className="text-sm font-medium">Email *</label>
+                    <Input
+                      name="email"
+                      type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      required 
+                      placeholder="your@email.com"
+                      required
                     />
                   </div>
+                  
                   <div className="space-y-2">
-                    <Input 
-                      type="text" 
-                      name="company" 
-                      placeholder="Компания" 
+                    <label className="text-sm font-medium">Компания</label>
+                    <Input
+                      name="company"
                       value={formData.company}
                       onChange={handleInputChange}
+                      placeholder="Название компании"
                     />
                   </div>
+                  
                   <div className="space-y-2">
-                    <Input 
-                      type="tel" 
-                      name="phone" 
-                      placeholder="Телефон" 
+                    <label className="text-sm font-medium">Телефон</label>
+                    <Input
+                      name="phone"
+                      type="tel"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      required 
+                      placeholder="+998 XX XXX XX XX"
                     />
                   </div>
+                  
                   <div className="space-y-2">
-                    <Input 
-                      type="text" 
-                      name="investmentAmount" 
-                      placeholder="Сумма инвестиций" 
+                    <label className="text-sm font-medium">Планируемая сумма инвестиций</label>
+                    <Input
+                      name="investmentAmount"
                       value={formData.investmentAmount}
                       onChange={handleInputChange}
+                      placeholder="$100,000"
                     />
                   </div>
+                  
                   <div className="space-y-2">
+                    <label className="text-sm font-medium">Дополнительная информация</label>
                     <textarea
                       name="message"
-                      rows={4}
-                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Ваше сообщение"
                       value={formData.message}
                       onChange={handleInputChange}
-                    ></textarea>
+                      placeholder="Расскажите о ваших инвестиционных интересах..."
+                      className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      rows={3}
+                    />
                   </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full"
-                    style={styles.foodsaveGradient}
-                  >
-                    Отправить заявку
-                  </Button>
+                  
+                  <div className="flex gap-3 pt-4">
+                    <Button type="submit" className="flex-1" style={styles.foodsaveGradient}>
+                      Отправить заявку
+                    </Button>
+                    <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
+                      Отмена
+                    </Button>
+                  </div>
                 </form>
               </DialogContent>
             </Dialog>
             
             <button 
               onClick={scrollToSolution}
-              className="px-8 py-4 rounded-xl font-bold text-lg bg-white border-2 border-teal-600 text-teal-600 hover:bg-teal-50 transition-all duration-300"
+              className="border-2 border-teal-600 text-teal-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-teal-600 hover:text-white transition-all duration-300"
             >
               Узнать больше
             </button>
+          </div>
+          
+          <div className="mt-12 grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-3xl font-bold text-teal-600 mb-2">35M+</div>
+              <p className="text-gray-600">Потенциальных пользователей</p>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-teal-600 mb-2">$100M+</div>
+              <p className="text-gray-600">Размер рынка</p>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-teal-600 mb-2">0</div>
+              <p className="text-gray-600">Прямых конкурентов</p>
+            </div>
           </div>
         </div>
       </section>
