@@ -347,7 +347,7 @@ const Business = () => {
         </div>
       </section>
       {/* CTA Section */}
-      <section className="py-12">
+      <section className="py-8">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <div className="space-y-8">
             <Badge className="mb-4 bg-teal-100 text-[#006260] border-teal-200">Начните сегодня</Badge>

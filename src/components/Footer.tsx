@@ -27,14 +27,14 @@ const Footer = () => {
   return (
     <>
       {/* CTA Section */}
-      <div className="bg-white pt-24 pb-16 px-0 text-center overflow-hidden">
+      <div className="bg-white pt-12 pb-0 px-0 text-center overflow-hidden">
         <h2 className="text-2xl lg:text-3xl font-bold text-primary mb-8">
           ПРИСОЕДИНЯЙТЕСЬ К БОЛЕЕ ЧЕМ 50 БИЗНЕСОВ,{" "}
           <br className="hidden md:block" />
           БОРЮЩИХСЯ С ПИЩЕВЫМИ ОТХОДАМИ ВМЕСТЕ С НАМИ
         </h2>
         
-        <div className="mb-12 py-4 overflow-hidden pointer-events-none">
+        <div className="mb-12 py-1 overflow-hidden pointer-events-none">
           <div className="inline-block whitespace-nowrap">
             <div className="animate-scroll text-2xl lg:text-4xl font-bold" style={{ color: 'rgb(255, 80, 60)' }}>
               {`${partnerBrands.join(' • ')} • `.repeat(10)}
