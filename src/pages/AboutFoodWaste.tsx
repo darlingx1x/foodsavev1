@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from '@/assets/food-waste-hero.jpg';
-import uzbekistanStats from '@/assets/uzbekistan-stats.jpg';
+import uzbekistanStats from '@/assets/uzbekistan-stats.webp';
 import businessImpact from '@/assets/business-impact.jpg';
 
 const InvestmentFormSchema = z.object({
