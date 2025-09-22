@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import heroPhoneImage from "@/assets/hero-phone.jpg";
+import heroPhoneImage from "@/assets/hero-phone.webp";
 import { useCTAs } from "@/hooks/use-ctas";
 
 const HeroSection = () => {

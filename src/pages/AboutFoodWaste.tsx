@@ -8,9 +8,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import heroImage from '@/assets/food-waste-hero.jpg';
+import heroImage from '@/assets/food-waste-hero.webp';
 import uzbekistanStats from '@/assets/uzbekistan-stats.webp';
-import businessImpact from '@/assets/business-impact.jpg';
+import businessImpact from '@/assets/business-impact.webp';
 
 const InvestmentFormSchema = z.object({
   name: z.string().min(2, "Минимум 2 символа"),

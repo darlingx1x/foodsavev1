@@ -4,9 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, TrendingUp, Users, Globe, DollarSign, Leaf, Target, CheckCircle, BarChart3, Clock, Shield } from "lucide-react";
 import BusinessRegistrationDialog from "@/components/BusinessRegistrationDialog";
-import businessPartnership from "@/assets/business-partnership.jpg";
-import appAnalytics from "@/assets/app-analytics.jpg";
-import restaurantStaff from "@/assets/restaurant-staff.jpg";
+import businessPartnership from "@/assets/business-partnership.webp";
+import appAnalytics from "@/assets/app-analytics.webp";
+import restaurantStaff from "@/assets/restaurant-staff.webp";
 
 const Business = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
