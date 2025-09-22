@@ -66,7 +66,7 @@ const Footer = () => {
       {/* Sticky Footer */}
       <div className="relative" style={{ height: '100vh', '--footer-height': '600px' } as React.CSSProperties}>
         <div className="h-[calc(100vh-600px)] bg-white relative z-10" />
-        <footer className="sticky bottom-0 text-white" style={{ backgroundColor: '#007C71', height: '600px', marginTop: 'auto' }}>
+        <footer className="sticky bottom-0 text-white" style={{ backgroundColor: '#005251', height: '600px', marginTop: 'auto' }}>
           <div className="py-16 px-4 h-full flex flex-col justify-center">
             <div className="max-w-7xl mx-auto w-full">
               <div className="text-center mb-12">

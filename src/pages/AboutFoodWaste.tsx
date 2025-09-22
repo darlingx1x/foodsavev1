@@ -124,10 +124,12 @@ const AboutFoodWaste = () => {
       border: '1px solid rgba(255,255,255,0.1)'
     },
     impactNumber: {
-      background: 'linear-gradient(135deg, hsl(45 85% 55%), hsl(120 70% 45%))',
+      background: 'linear-gradient(135deg, hsl(45 85% 55%), #00BFA5)',
+      color: 'transparent',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
-      backgroundClip: 'text'
+      backgroundClip: 'text',
+      display: 'inline-block'
     }
   };
 
