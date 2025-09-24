@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   const partnerBrands = [
-    "OSHI", "EVOS", "MAX WAY", "BELLISSИМО", "ЧАЙХОНА №1", "КОФЕИН", "ТОМИ YUK"
+    "RIXUZ", "SUSHI MINOR", "MAX WAY", "BELLISSИМО", "ЧАЙХОНА №1", "КОФЕИН", "ТОМИ YUK"
   ];
   const { openGooglePlay, openAppStore, openAppGallery, scrollToTop } = useCTAs();
 
